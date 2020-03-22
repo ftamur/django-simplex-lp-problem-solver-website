@@ -1,1 +1,1 @@
-# solving-lp-problems-with-simplex
+# Solving LP Problems with Revised Simplex Method. 
