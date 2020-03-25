@@ -3,15 +3,8 @@
 
 {% block content %}
 
-    <div class="container">
-        <form method="POST"> {% csrf_token %}
-            {{ form | crispy }}
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit">Next</button>
-            </span>
-        </form>
-
-    </div>
+    {{ result }}
+    {{ solution_steps }}
 
 {% endblock %}
 

@@ -1,0 +1,2 @@
+class SimplexInitException(Exception):
+    pass
