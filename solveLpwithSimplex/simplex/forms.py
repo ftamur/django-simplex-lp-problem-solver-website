@@ -28,8 +28,8 @@ class InitForm(forms.Form):
             HTML('<div style="margin-top:75px;"></div>'),
             'variables',
             'constraints',
-            HTML('<div style="margin-top:75px;"></div>'),
-            HTML('<hr>'),
+
+            HTML('<div style="margin-top:100px;"></div>'),
             Submit('submit', 'Next'),
         )
 
@@ -52,19 +52,22 @@ class SolveForm(forms.Form):
         self.helper.layout = Layout(
 
             Column(
-                HTML('<hr>'),
+
                 Fieldset(
                     'Objective function',
+                    HTML('<hr>'),
                     Row(
                         *self._get_field_names_of_objective_function_coefficients(),
                         'tendency',
                     ),
+                    HTML('<div style="margin-top:50px;"></div>'),
                 ),
 
-                HTML('<hr>'),
+
 
                 Fieldset(
                     'Constraints',
+                    HTML('<hr>'),
 
                     *[Div(HTML('<p><strong>{}:</strong></p>'.format(i + 1)),
                           Row(

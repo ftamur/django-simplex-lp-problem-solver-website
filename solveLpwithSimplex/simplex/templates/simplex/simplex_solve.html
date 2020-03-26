@@ -2,7 +2,10 @@
 {% load crispy_forms_tags %}
 
     {% block content %}
-        {% crispy form %}
+        <div class="container">
+            {% crispy form %}
+        </div>
+
     {% endblock %}
 
     {% block jquery %}

@@ -1,3 +1,7 @@
 .asteriskField {
     display: none;
 }
+
+.btn btn-primary{
+    alignment: right;
+}
