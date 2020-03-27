@@ -22,9 +22,11 @@ class SimplexSolveActionMixin:
         """
         If the form is valid, solve linear programming problem.
         """
-        solution, result = form.solve()
+        result = form.solve()
 
         return render(self.request, self.template_name_success, {
-            'result': result,
-            'solution_steps': solution,
+            'status': result['status'],
+            'time': result['solution_time'],
+            'objective_value': result['objective_value'],
+            'variables': result['variables_value_list'],
         })

@@ -3,8 +3,12 @@
 
 {% block content %}
 
-    {{ result }}
-    {{ solution_steps }}
+    <div class="jumbotron" align="center" style="margin-top: 5%">
+        <p><b>Status: </b> {{ status }} </p>
+        <p><b>Time: </b> {{ time }} </p>
+        <p><b>X: </b> {{ variables }} </p>
+        <p><b>Z: </b> {{ objective_value }} </p>
+    </div>
 
 {% endblock %}
 

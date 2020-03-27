@@ -3,6 +3,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Div, HTML, Submit, Row, Column
 from .exceptions import SimplexInitException
+from .utils import solver
 
 
 class InitForm(forms.Form):
@@ -79,13 +80,25 @@ class SolveForm(forms.Form):
                               const_field_name) in enumerate(self._get_field_names_of_constraints())],
                 ),
 
+                HTML(self.get_info_lower_bounds()),
                 HTML('<div style="margin-top:50px;"></div>'),
                 Submit('submit', 'Solve')
             )
         )
 
+    def get_info_lower_bounds(self):
+        bounds = ""
+
+        if self.variables > 3:
+            lower = '1...' + str(self.variables)
+        else:
+            lower = ','.join([str(i) for i in range(1, self.variables + 1)])
+
+        return f'<p>x<sub>{lower}</sub> &ge; 0</p>'
+
     def solve(self):
-        return self.get_values_of_constraints(), self.get_values_of_objective_function_coefficients()
+        return solver.lp_solver(self.get_values_of_objective_function_coefficients(), self.get_values_of_constraints())
+
 
     @staticmethod
     def _process_variables_and_constraints(variables,
@@ -120,10 +133,24 @@ class SolveForm(forms.Form):
     def get_values_of_objective_function_coefficients(self):
         """
         Gets values of objective function coefficients.
-        :Example: [2, 5, 1]
+        :Example: [[2, 5, 1], ['max']]
         """
-        return [self.cleaned_data[coeff_field_name]
-                for coeff_field_name in self._get_field_names_of_objective_function_coefficients()]
+
+        coeffs = list()
+
+        coeffs.append([self.cleaned_data[coeff_field_name]
+                for coeff_field_name in self._get_field_names_of_objective_function_coefficients()])
+
+        coeffs.append([self.get_value_of_tendency()])
+
+        return coeffs
+
+    def get_value_of_tendency(self):
+        """
+        Gets value of objective function tendency.
+        :Example: max
+        """
+        return self.cleaned_data['tendency']
 
     def get_values_of_constraint_coefficients(self):
         """
@@ -156,9 +183,12 @@ class SolveForm(forms.Form):
         :Example: (([1, 2.5], '<=', 25),
                    ([2, 5.1], '==', 60))
         """
-        return zip(self.get_values_of_constraint_coefficients(),
-                   self.get_values_of_constraint_operators(),
-                   self.get_values_of_constraint_right_hand_sides())
+        constraints = list(zip(self.get_values_of_constraint_coefficients(),
+                          self.get_values_of_constraint_operators(),
+                          self.get_values_of_constraint_right_hand_sides()))
+
+        print(constraints)
+        return constraints
 
     # Implementation methods - private
 
@@ -202,6 +232,6 @@ class SolveForm(forms.Form):
         :Example: ((['constr_coeff_1_1', 'constr_coeff_1_2'], 'constr_operator_1', 'constr_const_1'),
                    (['constr_coeff_2_1', 'constr_coeff_2_2'], 'constr_operator_2', 'constr_const_2'))
         """
-        return zip(self._get_field_names_of_constraint_coefficients(),
+        return list(zip(self._get_field_names_of_constraint_coefficients(),
                    self._get_field_names_of_constraint_operators(),
-                   self._get_field_names_of_constraint_right_hand_sides())
+                   self._get_field_names_of_constraint_right_hand_sides()))
