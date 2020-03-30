@@ -5,3 +5,19 @@
 .btn btn-primary{
     alignment: right;
 }
+
+#page-container{
+    position: relative;
+    min-height: 90vh;
+}
+
+#content-wrap{
+    padding-bottom: 1rem; /* footer height */
+}
+
+#footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 1rem;
+}

@@ -82,7 +82,8 @@ class SolveForm(forms.Form):
 
                 HTML(self.get_info_lower_bounds()),
                 HTML('<div style="margin-top:50px;"></div>'),
-                Submit('submit', 'Solve')
+                Submit('submit', 'Solve'),
+                HTML('<div style="margin-top:50px;"></div>'),
             )
         )
 
