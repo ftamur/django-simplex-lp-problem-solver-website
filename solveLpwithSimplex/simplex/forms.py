@@ -32,6 +32,7 @@ class InitForm(forms.Form):
 
             HTML('<div style="margin-top:100px;"></div>'),
             Submit('submit', 'Next'),
+
         )
 
 
@@ -83,6 +84,7 @@ class SolveForm(forms.Form):
                 HTML(self.get_info_lower_bounds()),
                 HTML('<div style="margin-top:50px;"></div>'),
                 Submit('submit', 'Solve'),
+                Submit('submit', 'Find Dual Lp', css_class='btn-danger'),
                 HTML('<div style="margin-top:50px;"></div>'),
             )
         )
@@ -236,3 +238,63 @@ class SolveForm(forms.Form):
         return list(zip(self._get_field_names_of_constraint_coefficients(),
                    self._get_field_names_of_constraint_operators(),
                    self._get_field_names_of_constraint_right_hand_sides()))
+
+
+class TransportationInitForm(forms.Form):
+    variables = forms.ChoiceField(
+        initial=3, choices=[(i, i) for i in range(2, 11)],
+        label='Supply'
+    )
+    constraints = forms.ChoiceField(
+        initial=3, choices=[(i, i) for i in range(1, 11)],
+        label='Demand'
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'GET'
+        self.helper.form_action = 'simplex:solve'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-4'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(
+            HTML('<div style="margin-top:75px;"></div>'),
+            'variables',
+            'constraints',
+
+            HTML('<div style="margin-top:100px;"></div>'),
+            Submit('submit', 'Next'),
+
+        )
+
+
+class AssignmentInitForm(forms.Form):
+    variables = forms.ChoiceField(
+        initial=3, choices=[(i, i) for i in range(2, 11)],
+        label='Work'
+    )
+    constraints = forms.ChoiceField(
+        initial=3, choices=[(i, i) for i in range(1, 11)],
+        label='Job'
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'GET'
+        self.helper.form_action = 'simplex:solve'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-4'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(
+            HTML('<div style="margin-top:75px;"></div>'),
+            'variables',
+            'constraints',
+
+            HTML('<div style="margin-top:100px;"></div>'),
+            Submit('submit', 'Next'),
+
+        )

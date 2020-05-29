@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+    {% block content %}
+        <div class="container">
+            {% crispy form %}
+        </div>
+
+    {% endblock %}
+
+    {% block jquery %}
+
+      <script type="text/javascript">
+
+          $(document).ready(function() {
+            $('<input>', {
+              type: 'hidden',
+              name: 'variables',
+              value: '{{ request.GET.variables }}'
+            }).appendTo('form');
+            $('<input>', {
+              type: 'hidden',
+              name: 'constraints',
+              value: '{{ request.GET.constraints }}'
+            }).appendTo('form');
+          });
+
+      </script>
+    {% endblock %}
+

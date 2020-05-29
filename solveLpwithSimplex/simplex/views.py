@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from .forms import InitForm, SolveForm
+from .forms import *
 from .mixins import SimplexInitMixin, SimplexSolveActionMixin
 
 
@@ -24,3 +24,13 @@ class SolveView(SimplexSolveActionMixin, SimplexInitMixin, FormView):
         kwargs.update({'constraints': constraints})
 
         return kwargs
+
+
+class TransportationInit(SimplexInitMixin, FormView):
+    template_name = 'simplex/transportation/transportation_init.html'
+    form_class = TransportationInitForm
+
+
+class AssignmentInit(SimplexInitMixin, FormView):
+    template_name = 'simplex/assignment/assignment_init.html'
+    form_class = AssignmentInitForm
